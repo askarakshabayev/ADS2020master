@@ -41,6 +41,41 @@ class BST {
         cout << node->data << " ";
         inOrder(node->right);
     }
+
+    Node *findMin(Node *node) {
+        while (node->left != NULL)
+            node = node->left;
+        return node;
+    }
+
+    Node *findMax(Node *node) {
+        while (node->right != NULL)
+            node = node->right;
+        return node;
+    }
+
+    Node *deleteNode(Node *node, int data) {
+        if (node == NULL)
+            return NULL;
+        if (data < node->data) {
+            node->left = deleteNode(node->left, data);
+        } else if (data > node->data) {
+            node->right = deleteNode(node->right, data);
+        } else {
+            if (node->right == NULL && node->left == NULL) 
+                node = NULL;
+            else if (node->left == NULL)
+                node = node->right;
+            else if (node->right == NULL)
+                node = node->left;
+            else {
+                Node *tmp = findMax(node->left);
+                node->data = tmp->data;
+                node->left = deleteNode(node->left, tmp->data);
+            }
+        }
+        return node;
+    }
 };
 
 int main() {
